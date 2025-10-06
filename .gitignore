@@ -1,0 +1,84 @@
+# Python compiled files
+__pycache__/
+*.py[cod]
+*$py.class
+
+
+# Qdrant local storage
+qdrant_storage/
+
+
+# Virtual environment
+venv/
+env/
+.venv/
+ENV/
+
+# IDE / Editor settings
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs and temp files
+*.log
+*.pot
+*.pyc
+*.pyo
+*.pyd
+*.sqlite3
+*.db
+*.pid
+*.seed
+*.csv
+*.tmp
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Dependency directories
+pip-wheel-metadata/
+__pypackages__/
+site/
+
+# FastAPI specific
+# (e.g., static/media uploads, build artifacts)
+staticfiles/
+media/
+uploads/
+dist/
+build/
+
+# Coverage / test outputs
+.coverage
+htmlcov/
+.tox/
+.nox/
+.pytest_cache/
+
+# MyPy / Pylint / other analysis tools
+.mypy_cache/
+.pyre/
+.pytype/
+.cache/
+
+# Docker
+*.pid
+*.tar
+*.bak
+docker-compose.override.yml
+
+# VSCode Python settings
+.python-version
+.vscode/
+
+# Misc
+*.bak
+*.orig
+*.swp

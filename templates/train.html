@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Train Data - Hybrid Search Chatbot</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Train Chatbot Data</h1>
+            <div class="nav">
+                <a href="/">Chat</a>
+                <a href="/train" class="active">Train Data</a>
+            </div>
+        </div>
+        
+        <div class="train-container">
+            <!-- Table Training Section -->
+            <div class="train-section">
+                <h3>Select Table to Train</h3>
+                <select id="tableSelect">
+                    <option value="">Select a table...</option>
+                </select>
+                
+                <div id="columnsInfo" class="columns-info"></div>
+                
+                <button id="trainButton" disabled>Train Data</button>
+                
+                <div id="trainStatus" class="train-status"></div>
+            </div>
+
+            <!-- SQL Query Training Section -->
+            <!-- SQL Query Training Section -->
+                <div class="train-section">
+                    <h3>Train with SQL Query</h3>
+                    
+                    <input type="text" id="sourceName" placeholder="Enter source name (e.g., Sales Data, Products List)" />
+                    
+                    <textarea id="sqlQuery" placeholder="Enter your SQL query here...
+                Example: SELECT * FROM products WHERE category = 'electronics'"></textarea>
+                    
+                    <button id="trainSqlButton">Train with SQL</button>
+                    
+                    <div id="sqlTrainStatus" class="train-status"></div>
+                </div>
+        </div>
+    </div>
+    
+    <script>
+        // Load tables
+        fetch('/api/tables')
+            .then(response => response.json())
+            .then(data => {
+                const select = document.getElementById('tableSelect');
+                data.tables.forEach(table => {
+                    const option = document.createElement('option');
+                    option.value = table;
+                    option.textContent = table;
+                    select.appendChild(option);
+                });
+            });
+
+        // Show columns when table selected
+        document.getElementById('tableSelect').addEventListener('change', function() {
+            const tableName = this.value;
+            const columnsInfo = document.getElementById('columnsInfo');
+            const trainButton = document.getElementById('trainButton');
+            
+            if (tableName) {
+                fetch(`/api/tables/${tableName}/columns`)
+                    .then(response => response.json())
+                    .then(data => {
+                        columnsInfo.innerHTML = `
+                            <h4>Columns in ${tableName}:</h4>
+                            <ul>${data.columns.map(col => `<li>${col}</li>`).join('')}</ul>
+                        `;
+                        trainButton.disabled = false;
+                    });
+            } else {
+                columnsInfo.innerHTML = '';
+                trainButton.disabled = true;
+            }
+        });
+
+        // Train table data
+        document.getElementById('trainButton').addEventListener('click', function() {
+            const tableName = document.getElementById('tableSelect').value;
+            const status = document.getElementById('trainStatus');
+            
+            if (!tableName) return;
+            
+            status.innerHTML = '<div class="loading">Training in progress...</div>';
+            this.disabled = true;
+            
+            fetch('/api/train', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ table_name: tableName })
+            })
+            .then(response => response.json())
+            .then(data => {
+                status.innerHTML = `<div class="success">${data.message}</div>`;
+                this.disabled = false;
+            })
+            .catch(error => {
+                status.innerHTML = `<div class="error">Error: ${error.message}</div>`;
+                this.disabled = false;
+            });
+        });
+
+        // Train SQL query data
+        // Train SQL query data
+        document.getElementById('trainSqlButton').addEventListener('click', function() {
+            const sqlQuery = document.getElementById('sqlQuery').value.trim();
+            const sourceName = document.getElementById('sourceName').value.trim();
+            const status = document.getElementById('sqlTrainStatus');
+            
+            if (!sqlQuery) {
+                status.innerHTML = '<div class="error">Please enter a SQL query</div>';
+                return;
+            }
+            
+            if (!sourceName) {
+                status.innerHTML = '<div class="error">Please enter a source name</div>';
+                return;
+            }
+            
+            status.innerHTML = '<div class="loading">Training SQL query data...</div>';
+            this.disabled = true;
+            
+            fetch('/api/train-sql', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ 
+                    sql_query: sqlQuery,
+                    source_name: sourceName
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                status.innerHTML = `<div class="success">${data.message}</div>`;
+                this.disabled = false;
+            })
+            .catch(error => {
+                status.innerHTML = `<div class="error">Error: ${error.message}</div>`;
+                this.disabled = false;
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hybrid Search Chatbot</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Hybrid Search Chatbot</h1>
+            <div class="nav">
+                <a href="/" class="active">Chat</a>
+                <a href="/train">Train Data</a>
+            </div>
+        </div>
+        
+        <div class="chat-container">
+            <div class="chat-messages" id="chatMessages">
+                <div class="message bot-message">
+                    <div class="message-content">
+                        আসসালামু আলাইকুম! আমি আপনার সহায়ক চ্যাটবট। কিছু জানতে চাইলে প্রশ্ন করুন।
+                    </div>
+                </div>
+            </div>
+            
+            <div class="chat-input">
+                <input type="text" id="messageInput" placeholder="আপনার প্রশ্ন লিখুন..." />
+                <button id="sendButton">পাঠান</button>
+            </div>
+        </div>
+    </div>
+    
+    <script src="/static/js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,11 @@
+fastapi
+uvicorn
+python-dotenv
+openai
+qdrant-client
+pyodbc
+pydantic
+jinja2
+python-multipart
+numpy
+aiosqlite
