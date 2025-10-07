@@ -15,7 +15,7 @@ class QdrantService:
             cls._client = QdrantClient(path=storage_path)
         return cls._client
     
-    def __init__(self):
+    def __init__(self, table_name=None):
         self.client = self.get_client()
         self.collection_name = settings.COLLECTION_NAME
     

@@ -64,13 +64,14 @@ class DataProcessor:
                 row_data[col] = cleaned_value
                 
                 # Text content এ শুধু meaningful data যুক্ত করবে
+                # if cleaned_value and cleaned_value != "N/A" and not self.is_numeric_type(column_types[j]):
                 if cleaned_value and cleaned_value != "N/A":
                     text_parts.append(f"{col}: {cleaned_value}")
             
             # যদি কোনো meaningful data না থাকে তাহলে skip করবে
-            if not text_parts:
-                skipped_rows += 1
-                continue
+            # if not text_parts:
+            #     skipped_rows += 1
+            #     continue
             
             text_content = " | ".join(text_parts)
             
@@ -124,12 +125,13 @@ class DataProcessor:
                     cleaned_value = self.clean_and_format_value(row[j], column_types[j])
                     row_data[col] = cleaned_value
                     
+                    # if cleaned_value and cleaned_value != "N/A" and not self.is_numeric_type(column_types[j]):
                     if cleaned_value and cleaned_value != "N/A":
                         text_parts.append(f"{col}: {cleaned_value}")
                 
-                if not text_parts:
-                    skipped_rows += 1
-                    continue
+                # if not text_parts:
+                #     skipped_rows += 1
+                #     continue
                 
                 text_content = " | ".join(text_parts)
                 
@@ -164,3 +166,8 @@ class DataProcessor:
             raise ValueError(f"SQL execution error: {str(e)}")
         finally:
             conn.close()
+
+    def is_numeric_type(self, column_type):    
+        """Check if column type is numeric"""    
+        column_type = str(column_type).lower()    
+        return any(t in column_type for t in ['int', 'decimal', 'numeric', 'float', 'real', 'money'])

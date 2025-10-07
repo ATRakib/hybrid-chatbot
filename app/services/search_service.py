@@ -10,7 +10,7 @@ class SearchService:
         query_embedding = self.embeddings.get_embedding(query)
         
         try:
-            search_results = self.qdrant.search(query_embedding, limit=3)
+            search_results = self.qdrant.search(query_embedding)
         except ValueError:
             # Collection not found, return default message
             return "দুঃখিত, কোনো ডেটা ট্রেইন করা হয়নি। প্রথমে ডেটা ট্রেইন করুন।", []
